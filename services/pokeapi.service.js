@@ -1,7 +1,6 @@
-const axios = require('axios');
-const NodeCache = require('node-cache');
+const axios = require("axios");
+const NodeCache = require("node-cache");
 
-[cite_start]
 const cache = new NodeCache({ stdTTL: 90 });
 
 /**
@@ -10,19 +9,19 @@ const cache = new NodeCache({ stdTTL: 90 });
  * @returns {Promise<object>} Un objeto con los detalles enriquecidos del Pokémon.
  */
 async function getPokemonDetails(nameOrId) {
-  const cacheKey = `pokemon_${nameOrId}`;
+  const cacheKey = "pokemon_${nameOrId}";
   
   // 1. buscamos en el caché primero
   const cachedData = cache.get(cacheKey);
   if (cachedData) {
-    console.log(`Cache HIT for: ${nameOrId}`);
+    console.log("Cache HIT for: ${nameOrId}");
     return cachedData;
   }
 
-  console.log(`Cache MISS for: ${nameOrId}. Fetching from API...`);
+  console.log("Cache MISS for: ${nameOrId}. Fetching from API...");
   // 2. Si no está en caché, hacer la petición a la PokeAPI
   try {
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${nameOrId}`);
+    const response = await axios.get("https://pokeapi.co/api/v2/pokemon/${nameOrId}");
     const pokemonApiData = response.data;
 
     [cite_start]// 3. Extraer solo los datos que nos interesan.
@@ -42,9 +41,9 @@ async function getPokemonDetails(nameOrId) {
     return pokemonDetails;
   } catch (error) {
     // Si la PokeAPI devuelve un 404 (no encontrado) o cualquier otro error.
-    console.error(`Error fetching Pokémon ${nameOrId}:`, error.message);
+    console.error("Error fetching Pokémon ${nameOrId}:", error.message);
     // Lanzamos el error para que el controlador lo maneje.
-    throw new Error(`Could not retrieve details for Pokémon: ${nameOrId}`);
+    throw new Error("Could not retrieve details for Pokémon: ${nameOrId}");
   }
 }
 
