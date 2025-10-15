@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const teamsController = require('../controllers/teams.controller');
+const validateSchema = require('../middlewares/validateSchema');
+const teamSchema = require('../schemas/teamSchema');
 
 //Rutas para el recurso 'teams'
 
 // POST /teams -> Crear un nuevo equipo
-router.post('/', teamsController.createTeam);
+router.post('/', validateSchema(teamSchema), teamsController.createTeam);
 
 // GET /teams -> Obtener todos los equipos
 router.get('/', teamsController.getAllTeams);
@@ -14,7 +16,7 @@ router.get('/', teamsController.getAllTeams);
 router.get('/:id', teamsController.getTeamById);
 
 // PUT /teams/:id -> Actualizar un equipo por su ID
-router.put('/:id', teamsController.updateTeam);
+router.put('/:id',validateSchema(teamSchema), teamsController.updateTeam);
 
 // DELETE /teams/:id -> Borrar un equipo por su ID
 router.delete('/:id', teamsController.deleteTeam);

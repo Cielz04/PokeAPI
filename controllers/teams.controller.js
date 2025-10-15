@@ -19,19 +19,19 @@ exports.getAllTeams = (req, res) => {
 
 exports.getTeamById = async (req, res) => {
   const { id } = req.params;
-    const stmt = db.prepare('SELECT * FROM teams WHERE id = ?');
+  const stmt = db.prepare('SELECT * FROM teams WHERE id = ?');
   const team = stmt.get(id);
 
   if (!team) {
     return res.status(404).json({ message: `Team with id ${id} not found.` });
   }
 
-  const memberNames = JSON.parse(team.members);
+  const members = JSON.parse(team.members);
 
   try {
 
     const enrichedMembers = await Promise.all(
-      memberNames.map(name => getPokemonDetails(name))
+      members.map(member => getPokemonDetails(member.name))
     );
     const enrichedTeam = {
       id: team.id,
@@ -41,7 +41,7 @@ exports.getTeamById = async (req, res) => {
 
     res.status(200).json(enrichedTeam);
   } catch (error) {
-    [cite_start]
+    // [cite_start]
     res.status(502).json({ 
       message: 'Error fetching data from external PokeAPI.',
       details: error.message
