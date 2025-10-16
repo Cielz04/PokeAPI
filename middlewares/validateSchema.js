@@ -10,8 +10,9 @@ function validateSchema(schema) {
     const valid = validate(req.body);
 
     if (!valid) {
-      return res.status(400).json({
-        message: "Invalid data",
+      return next({
+        status: 400,
+        message: 'Invalid data',
         errors: validate.errors.map(err => ({
           field: err.instancePath || err.params.missingProperty,
           message: err.message
