@@ -6,7 +6,7 @@ const rateLimit = require('express-rate-limit');
 //Importar el enrutador de equipos
 const teamsRouter = require('./routes/teams.routes');
 const handleError = require('./middlewares/errorHandler');
-const { helmet } = require('helmet');
+const helmet  = require('helmet');
 // Middleware para entender JSON en las peticiones
 //max 50 peticiones cada 2 minutos
 const limiter = rateLimit({
